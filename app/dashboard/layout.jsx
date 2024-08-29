@@ -1,5 +1,6 @@
 import React, { Children } from 'react'
 import SideBar from './_components/SideBar'
+import Header from './_components/Header'
 
 const DashboardLayout = ({children}) => {
   return (
@@ -8,7 +9,14 @@ const DashboardLayout = ({children}) => {
         <div className="hidden md:w-64 md:block">
             <SideBar/>
         </div>
-        <div className='p-10 md:ml-64'>{children}</div>
+        <div className='md:ml-64'>
+          <Header/>
+          <div className="p-10">
+
+          {children}
+            
+          </div>
+          </div>
 
     </div>
   )
