@@ -3,12 +3,21 @@ import { HiMiniSquares2X2 } from "react-icons/hi2";
 import { FaRegLightbulb } from "react-icons/fa";
 import { HiDocumentChartBar } from "react-icons/hi2";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import SelectCategory from "./_components/SelectCategory";
 import TopicDescription from "./_components/TopicDescription";
 import SelectOption from "./_components/SelectOption";
+import { UserInputContext } from "../_context/UserInputContext";
+import { CourseList } from "@/configs/Schema";
+import { GenerateCourseLayout_AI } from "@/configs/aimodel";
+import Loading from "./_components/Loading";
+import { db } from "@/configs/db";
+import uuid4 from "uuid4";
+import { useUser } from "@clerk/nextjs";
 
 const CreateCourse = () => {
+    const [loading, setLoading] = useState(false);
+    const {user} = useUser()
     const StepperOptions = [
         {
             id: 1,
@@ -27,11 +36,92 @@ const CreateCourse = () => {
         },
     ];
     const[activeIndex, setActiveIndex] = useState(0)
+    const { userCourseInput, setUserCourseInput } = useContext(UserInputContext);
+    useEffect(()=>{
+        // setUserCourseInput({
+        //     title: '',
+        //     description: '',
+        //     category: '',
+        //     options: [],
+        //     correctAnswer: '',
+        // })
+        console.log(userCourseInput)
+    },[userCourseInput])
+    // used to check thee enabldbe or disalbe button
+    const checkStatus = ()=> {
+        if(userCourseInput?.length === 0){
+            return true
+        }
+        if(activeIndex==0&&(userCourseInput?.category?.length == 0 ||userCourseInput?.category == undefined))
+        {
+            return true
+        }
+        if (activeIndex===1&&(userCourseInput?.topic?.length == 0 || userCourseInput?.topic == undefined)) {
+          return true  
+        }
+        else if (activeIndex===2&&(userCourseInput?.level == undefined || userCourseInput?.duration== undefined || userCourseInput?.displayVideo == undefined || userCourseInput?.noOfChapter==undefined)){
+            return true     
+        }
+        return false
+    }
+    const GenerateCourseLayout = async () => {
+        setLoading(true);
+        try {
+            const BASIC_PROMPT = "Generate A Course Tutorial on Following Detail With field Course Name, Description, Along with Chapter Name, About, Duration: ";
+            const USER_INPUT_PROMPT = `Category: ${userCourseInput?.category}, Topic: ${userCourseInput?.topic}, Level: ${userCourseInput?.level}, Duration: ${userCourseInput?.duration}, noOfChapters: ${userCourseInput?.noOfChapter}, in Json Format`;
+            const FINAL_PROMPT = BASIC_PROMPT + USER_INPUT_PROMPT;
+    
+            const result = await GenerateCourseLayout_AI.sendMessage(FINAL_PROMPT);
+    
+            const courseLayoutText = await result.response?.text();
+            console.log(courseLayoutText); // Log the raw text response for debugging
+    
+            // Parse the result and handle any potential issues
+            let courseLayout;
+            try {
+                courseLayout = JSON.parse(courseLayoutText);
+            } catch (error) {
+                console.error("Error parsing course layout:", error);
+                courseLayout = {}; // Assign an empty object or handle this scenario as needed
+            }
+    
+            // Check if the courseLayout is valid
+            if (courseLayout && Object.keys(courseLayout).length > 0) {
+                await SaveCourseLayoutInDb(courseLayout);
+            } else {
+                console.error("Invalid course layout received.");
+            }
+        } catch (error) {
+            console.error("Error generating course layout:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+    
+    const SaveCourseLayoutInDb = async (courseLayout) => {
+        try {
+            const id = uuid4();
+            const result = await db.insert(CourseList).values({
+                courseId: id,
+                name: userCourseInput?.topic,
+                level: userCourseInput?.level,
+                category: userCourseInput?.category,
+                courseOutput: courseLayout, // Ensure this is not null
+                createdBy: user?.primaryEmailAddress?.emailAddress,
+                userName: user?.fullName,
+                userProfileImage: user?.imageUrl,
+            });
+            console.log("Course saved successfully:", result);
+        } catch (error) {
+            console.error("Error saving course layout in DB:", error);
+        }
+    };
+    
 
     return (
         <div>
             {/* Stepper */}
-            <div className="flex flex-col items-center justify-center mt-10">
+            <div className="flex flex-col items-center justify-center mt-10"> 
                 <h2 className="text-2xl font-medium text-primary">Create Course</h2>
                 <div className="flex mt-10">
                     {StepperOptions.map((item, index) => (
@@ -54,14 +144,15 @@ const CreateCourse = () => {
             {activeIndex === 0 ? <SelectCategory/> : activeIndex === 1 ? <TopicDescription/> : <SelectOption/> }
             {/* next Previous  button */}
             <div className="flex justify-between mt-10">
-            <Button disabled={activeIndex == 0 } onClick={()=>setActiveIndex(activeIndex - 1)}>Previous</Button>
-           {activeIndex < 2 && <Button onClick={()=>setActiveIndex(activeIndex + 1)}>Next</Button>}
-          { activeIndex === 2 && <Button onClick={()=>setActiveIndex(activeIndex + 1)}>
-                Generate Course layout
+            <Button disabled={activeIndex == 0 } variant="outline" onClick={()=>setActiveIndex(activeIndex - 1)}>Previous</Button>
+           {activeIndex < 2 && <Button disabled={checkStatus()} onClick={()=>setActiveIndex(activeIndex + 1)}>Next</Button>}
+          { activeIndex === 2 && <Button disabled={checkStatus()} onClick={()=> GenerateCourseLayout()}>
+                Generate Course
             </Button> }
             </div>
 
             </div>
+            <Loading loading={loading}/>
         </div>
     );
 };
