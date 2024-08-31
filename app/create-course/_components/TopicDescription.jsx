@@ -16,11 +16,11 @@ const TopicDescription = () => {
       {/* Topic */}
       <div className="mt-5">
         <label htmlFor="" className=''>Write the topic for which you want to generate a course (e.g, Phyton Course, Java, Nextjs etc.)</label>
-        <Input placeholder={"Topic"} defaultValue={userCourseInput?.topic} className="text-xl h-14" onChange={(e)=> handleInputChange("topic",e.target.value)}/>
+        <Input placeholder={"Topic"} defaultValue={userCourseInput?.topic} className="text-xl h-14 focus-visible:ring-0" onChange={(e)=> handleInputChange("topic",e.target.value)}/>
       </div>
       <div className="mt-5">
         <label htmlFor="">Tell us more about your course, what you want to include in the (Optional) </label>
-        <Textarea placeholder="About your course" className="h-24 text-xl" onChange={(e)=> handleInputChange("description",e.target.value)} defaultValue={userCourseInput?.description}/>
+        <Textarea placeholder="About your course" className="h-24 text-xl focus-visible:ring-0" onChange={(e)=> handleInputChange("description",e.target.value)} defaultValue={userCourseInput?.description}/>
       </div>
 
     </div>

@@ -28,7 +28,7 @@ const SelectOption = () => {
             Difficulty Level
           </label>
 
-          <Select onValueChange={(value) => handleInputChange("level", value)} defaultValue={userCourseInput?.level}>
+          <Select onValueChange={(value) => handleInputChange("level", value)} defaultValue={userCourseInput?.level} >
             <SelectTrigger className="text-lg h-14">
               <SelectValue placeholder="Select" />
             </SelectTrigger>

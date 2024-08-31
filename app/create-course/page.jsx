@@ -14,10 +14,12 @@ import Loading from "./_components/Loading";
 import { db } from "@/configs/db";
 import uuid4 from "uuid4";
 import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 const CreateCourse = () => {
     const [loading, setLoading] = useState(false);
     const {user} = useUser()
+    const router = useRouter()
     const StepperOptions = [
         {
             id: 1,
@@ -38,13 +40,6 @@ const CreateCourse = () => {
     const[activeIndex, setActiveIndex] = useState(0)
     const { userCourseInput, setUserCourseInput } = useContext(UserInputContext);
     useEffect(()=>{
-        // setUserCourseInput({
-        //     title: '',
-        //     description: '',
-        //     category: '',
-        //     options: [],
-        //     correctAnswer: '',
-        // })
         console.log(userCourseInput)
     },[userCourseInput])
     // used to check thee enabldbe or disalbe button
@@ -67,13 +62,14 @@ const CreateCourse = () => {
     const GenerateCourseLayout = async () => {
         setLoading(true);
         try {
-            const BASIC_PROMPT = "Generate A Course Tutorial on Following Detail With field Course Name, Description, Along with Chapter Name, About, Duration: ";
-            const USER_INPUT_PROMPT = `Category: ${userCourseInput?.category}, Topic: ${userCourseInput?.topic}, Level: ${userCourseInput?.level}, Duration: ${userCourseInput?.duration}, noOfChapters: ${userCourseInput?.noOfChapter}, in Json Format`;
+            const BASIC_PROMPT = "Generate A Course Tutorial on Following Details with Fields as Course Name, Description, Along With Chapter Name, about, Duration: ";
+            const USER_INPUT_PROMPT = `Category: ${userCourseInput?.category}, Topic: ${userCourseInput?.topic}, Level: ${userCourseInput?.level}, Duration: ${userCourseInput?.duration}, NoOfChapters: ${userCourseInput?.noOfChapter}, in JSON format`;
             const FINAL_PROMPT = BASIC_PROMPT + USER_INPUT_PROMPT;
+            console.log(FINAL_PROMPT)
     
             const result = await GenerateCourseLayout_AI.sendMessage(FINAL_PROMPT);
     
-            const courseLayoutText = await result.response?.text();
+            const courseLayoutText =  result.response?.text();
             console.log(courseLayoutText); // Log the raw text response for debugging
     
             // Parse the result and handle any potential issues
@@ -100,7 +96,8 @@ const CreateCourse = () => {
     
     const SaveCourseLayoutInDb = async (courseLayout) => {
         try {
-            const id = uuid4();
+            var id = uuid4();
+            setLoading(true)
             const result = await db.insert(CourseList).values({
                 courseId: id,
                 name: userCourseInput?.topic,
@@ -112,6 +109,8 @@ const CreateCourse = () => {
                 userProfileImage: user?.imageUrl,
             });
             console.log("Course saved successfully:", result);
+            setLoading(false)
+            router.replace("/create-course/"+id)
         } catch (error) {
             console.error("Error saving course layout in DB:", error);
         }
