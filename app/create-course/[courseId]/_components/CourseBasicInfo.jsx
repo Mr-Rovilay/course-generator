@@ -3,8 +3,8 @@ import Image from 'next/image';
 import { RiPuzzle2Fill } from "react-icons/ri";
 import EditCourse from './EditCourse';
 import { Input } from '@/components/ui/input';
-import { useState } from 'react';
-import { storage } from '@/configs/fireBaseConfig';
+import { useEffect, useState } from 'react';
+import { storage } from '@/configs/firebaseConfig';
 import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
 import { db } from '@/configs/db';
 import { CourseList } from '@/configs/Schema';
@@ -12,6 +12,11 @@ import { eq } from 'drizzle-orm';
 
 const CourseBasicInfo = ({ course, refreshData }) => {
   const [selectedFile, setSelectedFile] = useState(null);
+  useEffect(()=>{
+    if (course) {
+setSelectedFile(course?.courseBanner)      
+    }
+  })
 
   const onFileSelected = async (event) => {
     const file = event.target.files[0];
@@ -67,6 +72,7 @@ const CourseBasicInfo = ({ course, refreshData }) => {
               width="200"
               height="100"
               className='w-full rounded-xl h-[300px] object-contain'
+              priority
             />
           </label>
           <Input

@@ -6,7 +6,8 @@ const getVideos = async (query) => {
   const params = {
     part: "snippet",
     q: query,
-    maxResults: 2, // The correct property is `maxResults`, not `maxResult`
+    maxResults: 1, // The correct property is `maxResults`, not `maxResult`
+    type: "video",
     key: process.env.NEXT_PUBLIC_YOUTUBE_API_KEY, // Corrected typo here
   };
 

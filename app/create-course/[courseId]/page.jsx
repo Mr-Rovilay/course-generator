@@ -1,7 +1,7 @@
 "use client";
 
 import { db } from "@/configs/db";
-import { CourseList } from "@/configs/Schema";
+import { Chapters, CourseList } from "@/configs/Schema";
 import { useUser } from "@clerk/nextjs";
 import { and, eq } from "drizzle-orm";
 import { useEffect, useState } from "react";
@@ -12,11 +12,13 @@ import { Button } from "@/components/ui/button";
 import { GenerateCourseLayout_AI } from "@/configs/AiModel";
 import Loading from "../_components/Loading";
 import Service from "@/configs/Service";
+import { useRouter } from "next/navigation";
 
 const CourseLayout = ({ params }) => {
   const { user } = useUser();
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(false);
+  const router = useRouter(); // Corrected instantiation
 
   useEffect(() => {
     if (params && user) {
@@ -45,25 +47,40 @@ const CourseLayout = ({ params }) => {
 
   const generateChapterContent = async () => {
     setLoading(true);
-    const chapters = course?.courseOutput?.chapters;
 
     try {
-      for (const chapter of chapters) {
-        const PROMPT = `Explain the concept in Details on Topic: ${course?.courseName}, Chapter: ${chapter.chapterName}, in JSON Format with list of array with fields as title, description in detail, code example (Code field in <precode> format) if applicable`;
+      const chapters = course?.courseOutput?.chapters;
+
+      for (const [index, chapter] of chapters.entries()) {
+        const PROMPT = `Explain the concept in Details on Topic: ${course?.name}, Chapter: ${chapter.chapterName}, in JSON Format with list of array with fields as title, description in detail, code example (Code field in <precode> format) if applicable`;
 
         // AI Content Generation
-        // const aiResult = await GenerateCourseLayout_AI.sendMessage(PROMPT);
-        // console.log(aiResult?.response?.text());
+        const aiResult = await GenerateCourseLayout_AI.sendMessage(PROMPT);
+        const content = JSON.parse(aiResult?.response?.text());
+        console.log("AI Generated Content:", content);
 
         // Fetch Related Videos
+        let videoId = "";
         try {
-          const videoResult = await Service.getVideos(`${course?.courseName}:${chapter.chapterName}`);
-          console.log(videoResult);
-          // You can save video URLs or do other operations here
+          const videoResult = await Service.getVideos(`${course?.name}:${chapter.chapterName}`);
+          console.log("Video Result:", videoResult);
+          videoId = videoResult[0]?.id?.videoId || "";
         } catch (videoError) {
           console.error("Error fetching videos:", videoError);
         }
+
+        // Save Chapter Content and Video ID
+        await db.insert(Chapters).values({
+          chapterId: index,
+          courseId: course?.courseId,
+          content: content,
+          videoId: videoId,
+        });
       }
+
+      // Navigate to the finish page after all chapters are processed
+      router.replace(`/create-course/${course?.courseId}/finish`);
+
     } catch (error) {
       console.error("Error generating chapter content:", error);
     } finally {
