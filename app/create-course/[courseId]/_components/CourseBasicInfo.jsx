@@ -72,6 +72,7 @@ setSelectedFile(course?.courseBanner)
               width="200"
               height="100"
               className='w-full rounded-xl h-[300px] object-contain'
+              placeholder = 'blur'
               priority
             />
           </label>

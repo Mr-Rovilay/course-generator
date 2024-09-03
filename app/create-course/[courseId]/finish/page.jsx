@@ -60,7 +60,7 @@ const FinishScreen = ({ params }) => {
           onMouseEnter={() => setIsCopied(false)}/> {isCopied ? "Copied!" : `${process.env.NEXT_PUBLIC_HOST_NAME}/course/view/${course?.courseId}`}
         </h2>
         <span className="absolute px-3 py-1 mt-2 text-sm text-white transition-opacity duration-300 transform -translate-x-1/2 bg-gray-700 rounded opacity-0 left-1/2 tooltip">
-          Click to copy to clipboard
+          copy to clipboard
         </span>
       </div>
     </div>

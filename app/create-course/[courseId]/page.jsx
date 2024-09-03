@@ -62,7 +62,9 @@ const CourseLayout = ({ params }) => {
         // Fetch Related Videos
         let videoId = "";
         try {
-          const videoResult = await Service.getVideos(`${course?.name}:${chapter.chapterName}`);
+          const videoResult = await Service.getVideos(
+            `${course?.name}:${chapter.chapterName}`
+          );
           console.log("Video Result:", videoResult);
           videoId = videoResult[0]?.id?.videoId || "";
         } catch (videoError) {
@@ -77,10 +79,12 @@ const CourseLayout = ({ params }) => {
           videoId: videoId,
         });
       }
+      await db.update(CourseList).set({
+        publish: true,
+      });
 
       // Navigate to the finish page after all chapters are processed
       router.replace(`/create-course/${course?.courseId}/finish`);
-
     } catch (error) {
       console.error("Error generating chapter content:", error);
     } finally {
