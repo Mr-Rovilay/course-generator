@@ -48,13 +48,13 @@ const FinishScreen = ({ params }) => {
   };
 
   return (
-    <div className='px-10 md:px-20 lg:px-44 my-7'>
+    <div className='md:px-20 lg:px-44 my-7'>
       <h2 className="my-3 text-2xl font-bold text-center text-primary">Congrats!!!!! Your Course is Ready!!</h2>
       <CourseBasicInfo course={course} refreshData={() => console.log('Data refreshed')} />
         <h2 className="mt-3">Course Url:</h2>
       <div className="relative">
         <h2
-          className="flex items-center justify-center gap-2 p-2 text-center text-gray-500 border rounded"
+          className="flex-col items-center justify-center p-2 text-center text-gray-500 border rounded md:flex"
          
         >
           <BsCopy className='cursor-pointer'  onClick={handleCopy}

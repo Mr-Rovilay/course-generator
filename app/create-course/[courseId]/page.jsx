@@ -58,7 +58,6 @@ const CourseLayout = ({ params }) => {
         // AI Content Generation
         const aiResult = await GenerateCourseLayout_AI.sendMessage(PROMPT);
         const content = JSON.parse(aiResult?.response?.text());
-        console.log("AI Generated Content:", content);
 
         // Fetch Related Videos
         let videoId = "";
@@ -66,7 +65,6 @@ const CourseLayout = ({ params }) => {
           const videoResult = await Service.getVideos(
             `${course?.name}:${chapter.chapterName}`
           );
-          console.log("Video Result:", videoResult);
           videoId = videoResult[0]?.id?.videoId || "";
         } catch (videoError) {
           console.error("Error fetching videos:", videoError);
@@ -94,7 +92,7 @@ const CourseLayout = ({ params }) => {
   };
 
   return (
-    <div className="mt-10 px-7 md:px-20 lg:px-44">
+    <div className="mt-10 md:px-20 lg:px-44">
       <h2 className="text-2xl font-bold text-center">Course Layout</h2>
       <Loading loading={loading} />
       <CourseBasicInfo course={course} refreshData={GetCourse} />

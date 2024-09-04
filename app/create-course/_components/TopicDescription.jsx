@@ -12,7 +12,7 @@ const TopicDescription = () => {
     }));
   }
   return (
-    <div className='mx-20 lg:mx-44'>
+    <div className='lg:mx-44'>
       {/* Topic */}
       <div className="mt-5">
         <label htmlFor="" className=''>Write the topic for which you want to generate a course (e.g, Phyton Course, Java, Nextjs etc.)</label>

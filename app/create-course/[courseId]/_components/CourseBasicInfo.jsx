@@ -50,7 +50,7 @@ setSelectedFile(course?.courseBanner)
   };
 
   return (
-    <div className='p-10 mt-5 border shadow-sm rounded-xl'>
+    <div className='p-2 mt-5 border shadow-sm rounded-xl'>
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
         <div className="">
           <h2 className="text-3xl font-bold">

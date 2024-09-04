@@ -15,9 +15,9 @@ const SelectCategory = () => {
   };
 
   return (
-    <div className="px-10 md:px-20">
+    <div className=" md:px-20">
       <h2 className="my-5">Select the Course Category</h2>
-      <div className="grid grid-cols-3 gap-10">
+      <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
         {CategoryList.map((item) => (
           <div
             className={`flex flex-col items-center p-5 border cursor-pointer rounded-xl hover:border-primary hover:bg-blue-50 ${

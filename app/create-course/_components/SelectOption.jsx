@@ -21,7 +21,7 @@ const SelectOption = () => {
   };
 
   return (
-    <div className="px-10 md:px-20 lg:px-44">
+    <div className="md:px-20 lg:px-44">
       <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
         <div className="">
           <label htmlFor="level" className="text-sm">
@@ -29,7 +29,7 @@ const SelectOption = () => {
           </label>
 
           <Select onValueChange={(value) => handleInputChange("level", value)} defaultValue={userCourseInput?.level} >
-            <SelectTrigger className="text-lg h-14">
+            <SelectTrigger className="text-lg h-14 ring-0 focus:ring-0">
               <SelectValue placeholder="Select" />
             </SelectTrigger>
             <SelectContent>
@@ -46,7 +46,7 @@ const SelectOption = () => {
           </label>
 
           <Select onValueChange={(value) => handleInputChange("duration", value)} defaultValue={userCourseInput?.duration}>
-            <SelectTrigger className="text-lg h-14">
+            <SelectTrigger className="text-lg h-14 ring-0 focus:ring-0">
               <SelectValue placeholder="Select" />
             </SelectTrigger>
             <SelectContent>
@@ -63,7 +63,7 @@ const SelectOption = () => {
           </label>
 
           <Select onValueChange={(value) => handleInputChange("displayVideo", value)} defaultValue={userCourseInput?.displayVideo}>
-            <SelectTrigger className="text-lg h-14">
+            <SelectTrigger className="text-lg h-14 ring-0 focus:ring-0">
               <SelectValue placeholder="Select" />
             </SelectTrigger>
             <SelectContent>
@@ -74,14 +74,14 @@ const SelectOption = () => {
         </div>
 
         <div className="">
-          <label htmlFor="noOfChapter" className="text-sm">
+          <label htmlFor="noOfChapter" className="text-sm ">
             Number of Chapters
           </label>
           <Input
             type="number"
             onChange={(event) => handleInputChange("noOfChapter", event.target.value)}
             defaultValue={userCourseInput?.noOfChapter}
-            className="text-lg h-14"
+            className="text-lg h-14 ring-0 focus:ring-0"
           />
         </div>
       </div>

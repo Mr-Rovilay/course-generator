@@ -55,7 +55,7 @@ const Start = ({ params }) => {
 
   return (
     <div>
-      <div className="fixed hidden h-screen border-r shadow-sm md:w-72 md:block">
+      <div className="fixed h-screen border-r shadow-sm md:w-72 md:block sm:bg-white">
         <h2 className="p-4 text-lg font-medium text-white bg-primary">
           {course?.courseOutput?.courseName}
         </h2>

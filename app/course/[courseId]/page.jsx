@@ -23,7 +23,7 @@ const Course = ({ params }) => {
   return (
     <div>
       <Header/>
-      <div className="p-10 px-10 md:px-20 lg:px-44">
+      <div className="px-2 md:px-20 lg:px-44">
 
       <CourseBasicInfo course={course} edit={false}/>
       <CourseDetails course={course}/>
