@@ -52,7 +52,8 @@ const CourseLayout = ({ params }) => {
       const chapters = course?.courseOutput?.chapters;
 
       for (const [index, chapter] of chapters.entries()) {
-        const PROMPT = `Explain the concept in Details on Topic: ${course?.name}, Chapter: ${chapter.chapterName}, in JSON Format with list of array with fields as title, description in detail, code example (Code field in <precode> format) if applicable`;
+        const PROMPT = `Explain the concept in Details on Topic: ${course?.name}, Chapter: ${chapter.chapterName}, in JSON Format with list of array with fields as title, explanation on give chapter in detail, Code Example (Code field in <precode> format) if applicable`;
+        console.log(PROMPT)
 
         // AI Content Generation
         const aiResult = await GenerateCourseLayout_AI.sendMessage(PROMPT);

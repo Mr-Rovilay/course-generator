@@ -11,7 +11,6 @@ const getVideos = async (query) => {
     key: process.env.NEXT_PUBLIC_YOUTUBE_API_KEY, // Corrected typo here
   };
 
-  console.log(params.key); // Log the key to ensure it's being passed correctly
 
   try {
     const res = await axios.get(YOUTUBE_BASE_URL + "/search", { params });

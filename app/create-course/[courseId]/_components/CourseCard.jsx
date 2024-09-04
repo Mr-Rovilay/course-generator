@@ -1,3 +1,5 @@
+
+"use client"
 import Image from "next/image";
 import React from "react";
 import { GrChapterAdd } from "react-icons/gr";
@@ -7,8 +9,9 @@ import DropdownOpt from "./DropdownOpt";
 import { db } from "@/configs/db";
 import { CourseList } from "@/configs/Schema";
 import { eq } from "drizzle-orm";
+import Link from "next/link";
 
-const CourseCard = ({ course, refreshData }) => {
+const CourseCard = ({ course, refreshData, displayUser=false }) => {
   const handleOnDelete = async () => {
     const res = await db
       .delete(CourseList)
@@ -21,19 +24,21 @@ const CourseCard = ({ course, refreshData }) => {
   };
   return (
     <div className="flex flex-col gap-1 p-2 mt-4 border rounded-lg shadow-md cursor-pointer">
+      <Link href={"/course/"+course?.courseId}>
       <Image
         src={course?.courseBanner}
         width={300}
         height={300}
         className="w-full h-[200px] object-cover rounded-lg"
       />
+       </Link>
       <div className="p-2">
         <h2 className="flex items-center justify-between text-lg font-medium">
           {course?.courseOutput?.courseName}
 
-          <DropdownOpt handleOnDelete={() => handleOnDelete()}>
+          {!displayUser && <DropdownOpt handleOnDelete={() => handleOnDelete()}>
             <HiOutlineEllipsisVertical />
-          </DropdownOpt>
+          </DropdownOpt>}
         </h2>
         <p className="my-1 text-sm text-gray-400">{course?.category}</p>
         <div className="flex items-center justify-between">
@@ -46,7 +51,11 @@ const CourseCard = ({ course, refreshData }) => {
             {course?.level}
           </h2>
         </div>
-      </div>
+       {displayUser &&  <div className="flex items-center gap-3 mt-2">
+          <Image src={course?.userProfileImage} width={35} height={35} className="rounded-full"/>
+          <h2 className="text-sm">{course?.userName}</h2>
+        </div>}
+      </div> 
     </div>
   );
 };

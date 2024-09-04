@@ -1,5 +1,4 @@
 "use client"
-
 import Image from 'next/image'
 import { LuHome } from "react-icons/lu";
 import { CiLogout } from "react-icons/ci";
@@ -8,8 +7,11 @@ import { GiUpgrade } from "react-icons/gi";
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { Progress } from '@/components/ui/progress';
+import { useContext } from 'react';
+import { UserCourseListContext } from '@/app/_context/UserCourseListContext';
 
 const SideBar = () => {
+    const {userCourseList, setUserCourseList}= useContext(UserCourseListContext)
     const Menu = [
         {
             id: 1,
@@ -22,18 +24,6 @@ const SideBar = () => {
             name: "Explore",
             icon: <GiSpikyExplosion />,
             path: "/dashboard/explore"
-        },
-        {
-            id: 3,
-            name: "Upgrade",
-            icon: <GiUpgrade />,
-            path: "/dashboard/upgrade"
-        },
-        {
-            id: 4,
-            name: "Logout",
-            icon: <CiLogout />,
-            path: "/dashboard/logout"
         },
     ];
 
@@ -56,8 +46,8 @@ const SideBar = () => {
                 ))}
             </ul>
             <div className="absolute bottom-10 w-[80%]">
-                <Progress value={33} />
-                <h2 className="my-2 text-sm">3 Out of 5 Course created</h2>
+                <Progress value={(userCourseList?.length/10)*100} />
+                <h2 className="my-2 text-sm">{userCourseList?.length} Out of 10 Course created</h2>
                 <h2 className='text-xs text-gray-500'>Upgrade your plan for unlimited course to get value to your course</h2>
             </div>
         </div>

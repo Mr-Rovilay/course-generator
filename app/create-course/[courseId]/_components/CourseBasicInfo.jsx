@@ -9,8 +9,9 @@ import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
 import { db } from '@/configs/db';
 import { CourseList } from '@/configs/Schema';
 import { eq } from 'drizzle-orm';
+import Link from 'next/link';
 
-const CourseBasicInfo = ({ course, refreshData }) => {
+const CourseBasicInfo = ({ course, refreshData, edit=true }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   useEffect(()=>{
     if (course) {
@@ -54,7 +55,7 @@ setSelectedFile(course?.courseBanner)
         <div className="">
           <h2 className="text-3xl font-bold">
             {course?.courseOutput?.courseName}
-            <EditCourse course={course} refreshData={() => refreshData(true)} />
+           {edit && <EditCourse course={course} refreshData={() => refreshData(true)} />}
           </h2>
           <p className="mt-3 text-sm text-gray-400">
             {course?.courseOutput?.description}
@@ -62,7 +63,9 @@ setSelectedFile(course?.courseBanner)
           <h2 className="flex items-center gap-2 mt-2 font-medium text-primary">
             <RiPuzzle2Fill /> {course?.courseOutput?.category}
           </h2>
+         {!edit && <Link href={"/course/"+course?.courseId+ "/start"}>
           <Button className="w-full mt-5">Start</Button>
+          </Link>}
         </div>
         <div className="">
           <label htmlFor='upload-image' className='cursor-pointer'>
@@ -72,16 +75,15 @@ setSelectedFile(course?.courseBanner)
               width="200"
               height="100"
               className='w-full rounded-xl h-[300px] object-contain'
-              placeholder = 'blur'
               priority
             />
           </label>
-          <Input
+         {edit &&  <Input
             type="file"
             id="upload-image"
             className="opacity-0"
             onChange={onFileSelected}
-          />
+          />}
         </div>
       </div>
     </div>

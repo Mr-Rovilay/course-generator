@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import React from 'react'
 
 const Hero = () => {
@@ -15,12 +16,12 @@ const Hero = () => {
       </p>
 
       <div className="flex flex-wrap justify-center gap-4 mt-8">
-        <a
+        <Link
           className="block w-full px-12 py-3 text-sm font-medium text-white rounded shadow bg-primary focus:outline-none sm:w-auto"
-          href="#"
+          href="/dashboard"
         >
           Get Started
-        </a>
+        </Link>
       </div>
     </div>
   </div>

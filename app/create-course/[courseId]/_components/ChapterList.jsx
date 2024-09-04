@@ -2,7 +2,7 @@ import { LuClock7 } from "react-icons/lu";
 import { CiCircleCheck } from "react-icons/ci";
 import EditChapters from "./EditChapters";
 
-const ChapterList = ({ course, refreshData }) => {
+const ChapterList = ({ course, refreshData, edit=true }) => {
   return (
     <div className='mt-3'>
       <h2 className="text-xl font-medium">Chapters</h2>
@@ -19,11 +19,11 @@ const ChapterList = ({ course, refreshData }) => {
               <div>
                 <h2 className="text-lg font-medium">
                   {chapter.chapterName}
-                  <EditChapters 
+                 {edit && <EditChapters 
                     course={course} 
                     index={index} 
                     refreshData={refreshData}
-                  />
+                  />}
                 </h2>
                 <p className="text-sm text-gray-500">{chapter.about}</p>
                 <p className="flex items-center gap-2 text-primary">
