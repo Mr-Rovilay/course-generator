@@ -9,12 +9,13 @@ import TopicDescription from "./_components/TopicDescription";
 import SelectOption from "./_components/SelectOption";
 import { UserInputContext } from "../_context/UserInputContext";
 import { CourseList } from "@/configs/Schema";
-import { GenerateCourseLayout_AI } from "@/configs/aimodel";
+
 import Loading from "./_components/Loading";
 import { db } from "@/configs/db";
 import uuid4 from "uuid4";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import { GenerateCourseLayout_AI } from "@/configs/AiModel";
 
 const CreateCourse = () => {
     const [loading, setLoading] = useState(false);
