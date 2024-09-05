@@ -19,7 +19,6 @@ const CourseCard = ({ course, refreshData, displayUser=false }) => {
       .returning({ id: CourseList?.id });
     if (res) {
       refreshData(true);
-      console.log("Course deleted successfully!");
     }
   };
   return (

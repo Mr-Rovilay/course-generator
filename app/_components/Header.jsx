@@ -6,7 +6,8 @@ import React from 'react'
 const Header = () => {
   return (
     <div className='flex justify-between p-5 shadow-sm'>
-        <Image src={"/logo.svg"} width={100} height={100} alt='logo'/>
+      <h2 className="text-xl">AI<span className='text-sm text-primary'>Generator</span></h2>
+   
     </div>
   )
 }

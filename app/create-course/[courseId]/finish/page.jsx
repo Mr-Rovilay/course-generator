@@ -33,8 +33,6 @@ const FinishScreen = ({ params }) => {
             eq(CourseList.createdBy, user?.primaryEmailAddress?.emailAddress)
           )
         );
-
-      console.log(result);
       setCourse(result[0]);
     } catch (error) {
       console.error("Error fetching course data:", error);

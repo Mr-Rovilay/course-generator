@@ -7,7 +7,7 @@ const Header = () => {
   return (
     <div className='flex items-center justify-between p-5 shadow-sm'>
       <Link href={"/"}>
-        <Image src={"/logo.svg"} width={90} height={90} alt=''/>
+      <h2 className="text-xl">AI<span className='text-sm text-primary'>Generator</span></h2>
       </Link>
         <UserButton/>
     </div>

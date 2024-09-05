@@ -31,7 +31,7 @@ const SideBar = () => {
 
     return (
         <div className='fixed h-full p-5 shadow-md md:w-64'>
-            <Image src={"/logo.svg"} width={160} height={160} alt="Logo" priority />
+            <h2 className="text-2xl">AI<span className='text-sm text-primary'>Generator</span></h2>
             <hr className='my-5' />
 
             <ul>

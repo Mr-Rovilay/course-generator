@@ -21,7 +21,6 @@ const Explore = () => {
         .from(CourseList)
         .limit(pageSize)
         .offset(pageIndex * pageSize);
-      console.log(result);
       setCourseList(result);
     } catch (error) {
       console.error("Error fetching courses:", error);

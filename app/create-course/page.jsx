@@ -41,7 +41,6 @@ const CreateCourse = () => {
     const[activeIndex, setActiveIndex] = useState(0)
     const { userCourseInput, setUserCourseInput } = useContext(UserInputContext);
     useEffect(()=>{
-        console.log(userCourseInput)
     },[userCourseInput])
     // used to check thee enabldbe or disalbe button
     const checkStatus = ()=> {
@@ -70,8 +69,7 @@ const CreateCourse = () => {
     
             const result = await GenerateCourseLayout_AI.sendMessage(FINAL_PROMPT);
     
-            const courseLayoutText =  result.response?.text();
-            console.log(courseLayoutText); // Log the raw text response for debugging
+            const courseLayoutText =  result.response?.text(); // Log the raw text response for debugging
     
             // Parse the result and handle any potential issues
             let courseLayout;
@@ -109,7 +107,6 @@ const CreateCourse = () => {
                 userName: user?.fullName,
                 userProfileImage: user?.imageUrl,
             });
-            console.log("Course saved successfully:", result);
             setLoading(false)
             router.replace("/create-course/"+id)
         } catch (error) {

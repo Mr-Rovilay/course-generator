@@ -33,7 +33,6 @@ setSelectedFile(course?.courseBanner)
         
         // Get the download URL
         const downloadUrl = await getDownloadURL(storageRef);
-        console.log("File available at:", downloadUrl);
 
        // Update the course banner in the database
        await db.update(CourseList).set({
